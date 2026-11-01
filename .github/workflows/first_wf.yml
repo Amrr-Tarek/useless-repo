@@ -2,7 +2,7 @@ name: first-workflow
 on: push
 jobs:
   job1:
-    name: job1
+    name: Job1
     runs-on: ubuntu-latest
     steps:
       - name: Sample job1 command
@@ -12,7 +12,7 @@ jobs:
       - name: Calling Sleep
         run: sleep 10
   job2:
-    name: job2
+    name: Job2
     runs-on: ubuntu-slim
     steps:
       - name: Checking Hostname
@@ -24,3 +24,18 @@ jobs:
           echo "Hello, World"
           echo "Current time is `date`"
           sleep 3
+  job3:
+    name: Job3
+    needs: job1
+    runs-on: ubuntu-slim
+    steps:
+      - name: Job with single dependency
+        run: sleep 10
+  job4:
+    name: Job4
+    needs: [ job1, job2, job3 ]
+    runs-on: ubuntu-slim
+    steps:
+      - name: Job for multiple dependencies
+        run: sleep 10
+      - background: 
