@@ -3,6 +3,7 @@ on:
   push:
   schedule:
     - cron: "5 * * * *" # Runs every minute
+  workflow_dispatch: 
 jobs:
   job1:
     name: Job1
