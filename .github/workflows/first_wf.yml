@@ -27,14 +27,19 @@ jobs:
   job3:
     name: Job3
     needs: job1
-    runs-on: ubuntu-slim
+    runs-on: windows-latest
     steps:
       - name: Job with single dependency
         run: sleep 10
+      - name: Checking Runner Info
+        shell: pwsh
+        run: get-computerinfo
   job4:
     name: Job4
     needs: [ job1, job2, job3 ]
-    runs-on: ubuntu-slim
+    runs-on: macos-latest
     steps:
       - name: Job for multiple dependencies
         run: sleep 10
+      - name: Checking Runner Info
+        run: sw_vers
