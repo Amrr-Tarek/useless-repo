@@ -2,7 +2,7 @@ name: first-workflow
 on:
   push:
   schedule:
-    - cron: "*/1 * * * *" # Runs every minute
+    - cron: "5 * * * *" # Runs every minute
 jobs:
   job1:
     name: Job1
