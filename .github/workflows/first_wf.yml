@@ -2,8 +2,7 @@ name: first-workflow
 on:
   push:
   schedule:
-    - cron: "5 * * * *" # Runs every minute
-  workflow_dispatch: 
+    - cron: "*/5 * * * *" # Runs every 5 minutes
 jobs:
   job1:
     name: Job1
