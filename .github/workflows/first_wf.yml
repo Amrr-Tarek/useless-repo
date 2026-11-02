@@ -29,11 +29,34 @@ jobs:
         with:
           name: directory_artifacts
           path: artifacts/
+      - name: Upload from multiple paths
+        uses: actions/upload-artifact@v7
+        with:
+          name: multiple_paths
+          path: |
+            ./myartifact.txt
+            artifacts/
       - name: Upload from multiple paths w exclusions
         uses: actions/upload-artifact@v7
         with:
           name: multiple_paths w exclusions
           path: |
-            ./myartifacts.txt
+            ./myartifact.txt
             artifacts/
             !**/hostname.txt
+  job2:
+      name: Job2
+      runs-on: ubuntu-slim
+      steps:
+        - name: Checking current dir
+          run: |
+            pwd
+            ls -ltr
+        - name: Download file artifact
+          uses: actions/download-artifact@v8
+          with:
+            name: one_file_test
+        - name: Checking current dir \#2
+          run: |
+            pwd
+            ls -ltr
