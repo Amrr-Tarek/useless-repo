@@ -4,43 +4,17 @@ on:
 jobs:
   job1:
     name: Job1
-    runs-on: ubuntu-latest
-    steps:
-      - name: Sample job1 command
-        run: echo "Hello, World from job1"
-      - name: Checking OS Release for GitHub Hosted Runner
-        run: cat /etc/os-release
-      - name: Calling Sleep
-        run: sleep 10
-  job2:
-    name: Job2
     runs-on: ubuntu-slim
     steps:
-      - name: Checking Hostname
+      - name: Step-1
         run: |
+          pwd
+          ls -ltr
           hostname
-          whoami
-      - name: Testing Multiple Commands
+      - name: Step-2: Checkout
+        uses: actions/checkout@v6.1.0
+      - name: Step-3
         run: |
-          echo "Hello, World"
-          echo "Current time is `date`"
-          sleep 3
-  job3:
-    name: Job3
-    needs: job1
-    runs-on: windows-latest
-    steps:
-      - name: Job with single dependency
-        run: sleep 10
-      - name: Checking Runner Info
-        shell: pwsh
-        run: get-computerinfo
-  job4:
-    name: Job4
-    needs: [ job1, job2, job3 ]
-    runs-on: macos-latest
-    steps:
-      - name: Job for multiple dependencies
-        run: sleep 10
-      - name: Checking Runner Info
-        run: sw_vers
+          pwd
+          ls -ltr
+          hostname
