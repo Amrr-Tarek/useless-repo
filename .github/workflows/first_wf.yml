@@ -78,3 +78,35 @@ jobs:
           run: |
             pwd
             ls -ltr
+  job4:
+      name: Job4
+      needs: job1
+      runs-on: ubuntu-slim
+      steps:
+        - name: Creating custom folder for download
+          run: mkdir -p single_file download_directory
+        - name: Checking current dir
+          run: |
+            pwd
+            ls -ltr
+        - name: Download file artifact
+          uses: actions/download-artifact@v8
+          with:
+            name: one_file_test
+            path: single_file
+        - name: Download file artifact
+          uses: actions/download-artifact@v8
+          with:
+            name: directory_artifacts
+        - name: Download directory artifact
+          uses: actions/download-artifact@v8
+          with:
+            name: directory_artifacts
+            path: download_directory
+        - name: Checking current dir \#2
+          run: |
+            pwd
+            echo "CHECKING SINGLE FILE DIRECTORY"
+            ls -ltr single_file
+            echo "CHECKING DIRECTORY"
+            ls -ltr download_directory
