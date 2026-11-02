@@ -46,6 +46,7 @@ jobs:
             !**/hostname.txt
   job2:
       name: Job2
+      needs: job1
       runs-on: ubuntu-slim
       steps:
         - name: Checking current dir
@@ -56,6 +57,23 @@ jobs:
           uses: actions/download-artifact@v8
           with:
             name: one_file_test
+        - name: Checking current dir \#2
+          run: |
+            pwd
+            ls -ltr
+  job3:
+      name: Job3
+      needs: job1
+      runs-on: ubuntu-slim
+      steps:
+        - name: Checking current dir
+          run: |
+            pwd
+            ls -ltr
+        - name: Download file artifact
+          uses: actions/download-artifact@v8
+          with:
+            name: directory_artifacts
         - name: Checking current dir \#2
           run: |
             pwd
