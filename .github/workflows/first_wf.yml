@@ -2,8 +2,6 @@ name: first-workflow
 on:
   push:
     branches: 
-      - dev
-      - 'feature-*'
       - main
   pull_request:
     branches:
@@ -49,4 +47,4 @@ jobs:
             pwd
             ls -ltr
         - name: Step for PR Demos
-          run: exit 1 # Intentional Fail
+          run: exit 0 # Removed Intentional Fail
