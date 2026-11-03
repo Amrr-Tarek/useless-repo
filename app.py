@@ -12,8 +12,5 @@ def home():
 def health():
     return jsonify(status="healthy")
 
-def bar_func(user_input):
-    eval(user_input)
-
 if __name__ == "__main__":  # pragma: no cover
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="127.0.0.1", port=5000)
