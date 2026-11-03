@@ -1,6 +1,15 @@
 name: first-workflow
 on:
   push:
+    branches: 
+      - main
+  pull_request:
+    branches:
+      - main
+env:
+  ENV_TYPE: DEV
+  APP_USER: bruh
+  APP_PORT: 80
 jobs:
   job1:
     name: Job1
@@ -24,89 +33,58 @@ jobs:
         with:
           name: one_file_test
           path: ./myartifact.txt
-      - name: Upload from dir
-        uses: actions/upload-artifact@v7
-        with:
-          name: directory_artifacts
-          path: artifacts/
-      - name: Upload from multiple paths
-        uses: actions/upload-artifact@v7
-        with:
-          name: multiple_paths
-          path: |
-            ./myartifact.txt
-            artifacts/
-      - name: Upload from multiple paths w exclusions
-        uses: actions/upload-artifact@v7
-        with:
-          name: multiple_paths w exclusions
-          path: |
-            ./myartifact.txt
-            artifacts/
-            !**/hostname.txt
   job2:
-      name: Job2
-      needs: job1
-      runs-on: ubuntu-slim
-      steps:
-        - name: Checking current dir
-          run: |
-            pwd
-            ls -ltr
-        - name: Download file artifact
-          uses: actions/download-artifact@v8
-          with:
-            name: one_file_test
-        - name: Checking current dir \#2
-          run: |
-            pwd
-            ls -ltr
+    name: Job2
+    needs: job1
+    runs-on: ubuntu-slim
+    steps:
+      - name: Download file artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: one_file_test
+      - name: Referring Repo Secret
+        run: |
+          echo "[INFO] Application password: ${{ secrets.APP_PWD }}"
+      - name: Referring Env. vars
+        run: |
+          echo "[INFO] Running Deployment for $ENV_TYPE with user $APP_USER."
+          echo "[INFO] Once deployed, application is accissible at port $APP_PORT"
   job3:
-      name: Job3
-      needs: job1
-      runs-on: ubuntu-slim
-      steps:
-        - name: Checking current dir
-          run: |
-            pwd
-            ls -ltr
-        - name: Download file artifact
-          uses: actions/download-artifact@v8
-          with:
-            name: directory_artifacts
-        - name: Checking current dir \#2
-          run: |
-            pwd
-            ls -ltr
-  job4:
-      name: Job4
-      needs: job1
-      runs-on: ubuntu-slim
-      steps:
-        - name: Creating custom folder for download
-          run: mkdir -p single_file download_directory
-        - name: Checking current dir
-          run: |
-            pwd
-            ls -ltr
-        - name: Download file artifact
-          uses: actions/download-artifact@v8
-          with:
-            name: one_file_test
-            path: single_file
-        - name: Download file artifact
-          uses: actions/download-artifact@v8
-          with:
-            name: directory_artifacts
-        - name: Download directory artifact
-          uses: actions/download-artifact@v8
-          with:
-            name: directory_artifacts
-            path: download_directory
-        - name: Checking current dir \#2
-          run: |
-            pwd
-            echo "CHECKING SINGLE FILE DIRECTORY"
-            ls -ltr single_file
-            echo "CHECKING DIRECTORY"
-            ls -ltr download_directory
+    name: Job3
+    runs-on: ubuntu-slim
+    steps:
+      - name: Referring Context Vars
+        run: |
+          echo "[INFO] Repo name: ${{ github.repository }} | branch: ${{ github.ref_name }}\nAction: ${{ github.action }}"
+          echo "[INFO] Triggered by ${{ github.event_name }}."
+          echo "[INFO] Added by ${{ github.actor }}."
+          echo "[INFO] Runner: ${{ runner.OS }}."
+          echo "[INFO] Job_ID: ${{ job.check_run_id }}."
+          echo "[INFO] IDK: ${{ steps }}."
+  staging:
+    name: STAGE DEPLOYMENT
+    runs-on: ubuntu-latest
+    steps:
+      - name: Referring Env Vars
+        run: |
+          echo "Running deployment on ${{ vars.HOST }} using ${{ vars.USER }}"
+      - name: Referring Env Secrets
+        run: |
+          echo "User: ${{ vars.USER }}. Password: ${{ secrets.PASSWORD }}"
+    environment:
+      name: STAGING
+    if: github.head_ref == 'dev'
+  production:
+    name: PRODUCTION DEPLOYMENT
+    runs-on: ubuntu-latest
+    steps:
+      - name: Referring Env Vars
+        run: |
+          echo "Running deployment on ${{ vars.HOST }} using ${{ vars.USER }}"
+      - name: Referring Env Secrets
+        run: |
+          echo "User: ${{ vars.USER }}. Password: ${{ secrets.PASSWORD }}"
+    environment:
+      name: PRODUCTION
+    if: github.ref == 'refs/heads/main'
+        
