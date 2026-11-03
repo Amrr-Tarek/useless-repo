@@ -42,6 +42,9 @@ jobs:
           uses: actions/download-artifact@v8
           with:
             name: one_file_test
+        - name: Referring Repo Secret
+          run: |
+            echo "[INFO] Application password: ${{ secrets.APP_PWD }}"
         - name: Referring Env. vars
           run: |
             echo "[INFO] Running Deployment for $ENV_TYPE with user $APP_USER."
