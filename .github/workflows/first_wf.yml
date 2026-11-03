@@ -73,8 +73,9 @@ jobs:
           echo "User: ${{ vars.USER }}. Password: ${{ secrets.PASSWORD }}"
     environment:
       name: STAGING
+    if: github.ref == 'refs/heads/dev'
   production:
-    name: STAGE PRODUCTION
+    name: PRODUCTION DEPLOYMENT
     runs-on: ubuntu-latest
     steps:
       - name: Referring Env Vars
@@ -85,4 +86,5 @@ jobs:
           echo "User: ${{ vars.USER }}. Password: ${{ secrets.PASSWORD }}"
     environment:
       name: PRODUCTION
+    if: github.ref == 'refs/heads/main'
         
