@@ -34,18 +34,30 @@ jobs:
           name: one_file_test
           path: ./myartifact.txt
   job2:
-      name: Job2
-      needs: job1
-      runs-on: ubuntu-slim
-      steps:
-        - name: Download file artifact
-          uses: actions/download-artifact@v8
-          with:
-            name: one_file_test
-        - name: Referring Repo Secret
-          run: |
-            echo "[INFO] Application password: ${{ secrets.APP_PWD }}"
-        - name: Referring Env. vars
-          run: |
-            echo "[INFO] Running Deployment for $ENV_TYPE with user $APP_USER."
-            echo "[INFO] Once deployed, application is accissible at port $APP_PORT"
+    name: Job2
+    needs: job1
+    runs-on: ubuntu-slim
+    steps:
+      - name: Download file artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: one_file_test
+      - name: Referring Repo Secret
+        run: |
+          echo "[INFO] Application password: ${{ secrets.APP_PWD }}"
+      - name: Referring Env. vars
+        run: |
+          echo "[INFO] Running Deployment for $ENV_TYPE with user $APP_USER."
+          echo "[INFO] Once deployed, application is accissible at port $APP_PORT"
+  job3:
+    name: Job3
+    runs-on: ubuntu-slim
+    steps:
+      - name: Referring Context Vars
+        run: |
+          echo "[INFO] Repo name: ${{ github.repository }} | branch: ${{ github.ref_name }}\nAction: ${{ github.action }}"
+          echo "[INFO] Triggered by ${{ github.event_name }}."
+          echo "[INFO] Added by ${{ github.actor }}."
+          echo "[INFO] Runner: ${{ runner.OS }}."
+          echo "[INFO] Job_ID: ${{ job.check_run_id }}."
+          echo "[INFO] IDK: ${{ steps }}."
