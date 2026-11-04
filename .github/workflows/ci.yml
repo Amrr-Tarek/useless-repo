@@ -14,7 +14,7 @@ permissions:
 jobs:
   unit-tests:
     name: Unit testing
-    runs-on: ubuntu-latetstt
+    runs-on: ubuntu-latetst
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -143,3 +143,28 @@ jobs:
         with:
           name: test-app_image
           path: ./test-app.tar
+  publish-dockerhub:
+    name: Publish Image to Docker GitHub
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download the Image
+        uses: actions/download-artifact@v7
+        with:
+          name: test-app_image
+          path: .
+      - name: Load Docker Image
+        run: docker load -i test-app.tar
+      - name: Docker Login
+        uses: docker/login-action@v4
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME  }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Tag Image
+        run: |
+          IMAGE_TAG="${{ needs.build.outputs.image-tags }}"
+          docker image tag test-app:$IMAGE_TAG ${{ vars.DOCKERHUB_USERNAME }}/test-app:$IMAGE_TAG
+      - name: Push Image
+        run: |
+          IMAGE_TAG="${{ needs.build.outputs.image-tags }}"
+          docker image push ${{ vars.DOCKERHUB_USERNAME }}/test-app:$IMAGE_TAG
