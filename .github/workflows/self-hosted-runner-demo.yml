@@ -1,0 +1,29 @@
+name: self-hosted-runner-demo
+
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  demo-1:
+    name: Demo Job 1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display System Info
+        run: |
+          echo "Hostname: $(hostname)"
+          echo "OS Version:"
+          lsb_release -a || cat /etc/os-lsb_release
+          echo "Runner Name: ${{ runner.name }}"
+          echo "Runer OS: ${{ runner.os }}"
+  demo-2:
+    name: Demo Job 2
+    runs-on: self-hosted # pick up a self-hosted runner with the label self-hosted (will pick either of them)
+    steps:
+      - name: Display System Info
+        run: |
+          echo "Hostname: $(hostname)"
+          echo "OS Version:"
+          lsb_release -a || cat /etc/os-lsb_release
+          echo "Runner Name: ${{ runner.name }}"
+          echo "Runer OS: ${{ runner.os }}"
