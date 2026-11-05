@@ -12,6 +12,7 @@ permissions:
   actions: read
   security-events: write
   packages: write
+  contents: read
 
 jobs:
   ci-pipeline:
