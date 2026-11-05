@@ -8,7 +8,6 @@ on:
       - main
   workflow_dispatch:
 
-    
 permissions:
   actions: read
   security-events: write
@@ -22,6 +21,7 @@ jobs:
       DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
       run_codeql: true
       run_sonar: true
+      run_build: false
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
