@@ -9,14 +9,15 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  actions: read
+  security-events: write
+  packages: write
 
 jobs:
   ci-pipeline:
-    uses: Amrr-Tarek/reusable-workflows/.github/workflows/ci.yml@main
+    uses: amrtarek-test-org/reusable-workflows/.github/workflows/ci.yml@main
     with:
       DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-      
