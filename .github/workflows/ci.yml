@@ -1,0 +1,27 @@
+name: CI Pipeline
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  security-events: write
+  packages: write
+  contents: read
+
+jobs:
+  ci-pipeline:
+    uses: amr-io/reusable-workflows/.github/workflows/ci.yml@main
+    with:
+      DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+      run_codeql: true
+      run_sonar: true
+      run_build: false
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
