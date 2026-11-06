@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   ci-pipeline:
-    uses: amrtarek-test-org/reusable-workflows/.github/workflows/ci.yml@main
+    uses: amr-io/reusable-workflows/.github/workflows/ci.yml@main
     with:
       DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
       run_codeql: true
